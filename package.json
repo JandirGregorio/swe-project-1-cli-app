@@ -1,0 +1,23 @@
+{
+  "name": "swe-project-1-cli-app",
+  "version": "1.0.0",
+  "description": "Find instructions for completing this project at the [Marcy Lab School Docs](https://marcylabschool.gitbook.io/marcy-lab-school-docs/mod-1-javascript-fundamentals/12-project-week).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JandirGregorio/swe-project-1-cli-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JandirGregorio/swe-project-1-cli-app/issues"
+  },
+  "homepage": "https://github.com/JandirGregorio/swe-project-1-cli-app#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
