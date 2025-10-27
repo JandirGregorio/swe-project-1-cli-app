@@ -26,6 +26,5 @@ const showMenu = () => {
         prompt('\nPress Enter to continue...');
         console.clear();
     }
-    console.log('See ya!');
 };
-showMenu();
+module.exports = {showMenu};

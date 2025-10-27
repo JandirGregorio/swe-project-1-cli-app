@@ -1,5 +1,6 @@
 const prompt = require('prompt-sync')({sigint: true});
 
+// array of questions
 const quizOptions = [
     {
     question : "What is 2+2",
@@ -13,7 +14,8 @@ const quizOptions = [
     },
 ];
 
-let topFivePlayers = [
+// create array to hold the top 5 players
+const topFivePlayers = [
     // {
     //     name, 
     //     score, 
@@ -21,30 +23,42 @@ let topFivePlayers = [
     // }
 ];
 const viewQuiz = () =>{
+    // create variable to hold the number of questions answered correctly
     let answeredCorrect = 0;
+    // traverse the array of 
     for(let i = 0; i < quizOptions.length; i++){
+        // create a variable quizChoices to hold every question and get the array of choices
         const quizChoices = quizOptions[i].choices;
-
-        console.log(`Question ${i + 1}: ${quizOptions[i].question}?`)
+        // Print the question number and the question
+        console.log(`Question ${i + 1}: ${quizOptions[i].question}?`);
+        // print every choice in quizChoices using forEach
         quizChoices.forEach((answer, index) => {
         console.log(`${index + 1}) ${answer}`);
         });
-        const answerChoice = prompt(`Enter your answer: (1 - ${quizChoices.length})`);
+
+        //Ask the user for an question option
+        const answerChoice = prompt(`Enter your answer (1 - ${quizChoices.length}): `).trim();
         const indexChoice = Number(answerChoice) -1;
 
+        // check if the current index matches the `answerIndex` property in quizOptions
+        // if it's true, increase the number of questions answered correctly
         if(checkAnswers(indexChoice, i)){
             answeredCorrect++;
             console.log('Correct! Well done!');
         } else{
             console.log('Incorrect :(');
         }
+        // Calculate the current percentage/grade
         const currentScore = Math.floor(answeredCorrect/quizOptions.length * 100);
+        // Display how many questions the user has answered correctly and the grade
         console.log(`Current Score: ${answeredCorrect}/${quizOptions.length} (%${currentScore})\n`);
     }
+    // Final Score after the loop is done
     const finalScore = Math.floor(answeredCorrect/quizOptions.length * 100);
     console.log(`Quiz Complete!`);
     console.log(`Final Score: ${answeredCorrect}/${quizOptions.length} (%${finalScore})`);
     console.log('Thanks for playing!');
+    // Check if the current player can make it to the top 5
     if(isTopFive(finalScore)){
         console.log('Congratulations! You scored a high score!');
         const playerName = prompt('Enter your name: ');
@@ -68,9 +82,9 @@ const addTopFive = (name, score) =>{
     topFivePlayers.push({name, score, date: scoreDate});
 
     // sort the array of players
-    topFivePlayers.sort((a, b) => a.score - b.score);
-
-    topFivePlayers = topFivePlayers.slice(0, 5);
+    topFivePlayers.sort((a, b) => b.score - a.score);
+    // keep only the first 5 players in the array
+    topFivePlayers.splice(5);
 
 };
 
