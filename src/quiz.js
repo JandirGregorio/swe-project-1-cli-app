@@ -1,5 +1,8 @@
 const prompt = require('prompt-sync')({sigint: true});
+//const path = require('path');
+const fs = require('fs');
 
+// const pathToJSON = fs.readFile(path.join(__dirname, 'swe-project-1-cli-app', 'high-scores.json'))
 // array of questions
 const quizOptions = [
     {
@@ -22,6 +25,25 @@ const topFivePlayers = [
     //     date,
     // }
 ];
+
+const loadDataFromJSON = () =>{
+    try {
+        const playerInfo = fs.readFileSync('high-scores.json', 'utf8');
+        const jsonData = JSON.parse(playerInfo);
+        topFivePlayers.push(...jsonData);
+    } catch (error) {
+        console.error('Error reading or parsing JSON file', error);
+    }
+};
+
+const saveDataToJSON = () => {
+    const data = JSON.stringify(topFivePlayers, null, 2);
+    fs.writeFile('high-scores.json', data, 'utf8', (err) => {
+        if(err) {
+            console.log('Error writing file:', err);
+        } 
+    });
+};
 const viewQuiz = () =>{
     // create variable to hold the number of questions answered correctly
     let answeredCorrect = 0;
@@ -86,6 +108,8 @@ const addTopFive = (name, score) =>{
     // keep only the first 5 players in the array
     topFivePlayers.splice(5);
 
+    saveDataToJSON();
+
 };
 
 const isTopFive = (score) => {
@@ -105,4 +129,5 @@ const viewTopFive = () => {
         console.log(`${place + 1}. ${player.score} (${player.name}) - ${player.date}`);
     });
 };
+loadDataFromJSON();
 module.exports = {viewQuiz, viewTopFive};
