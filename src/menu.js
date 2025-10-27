@@ -2,7 +2,7 @@
 
 // do the options for the quiz
 
-const prompt = require('prompt-sync')({singing : true});
+const prompt = require('prompt-sync')({siginit : true});
 const {viewQuiz, viewTopFive} = require('./quiz');
 const showMenu = () => {
     let isRunning = true;

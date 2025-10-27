@@ -41,9 +41,9 @@ const viewQuiz = () =>{
         const currentScore = Math.floor(answeredCorrect/quizOptions.length * 100);
         console.log(`Current Score: ${answeredCorrect}/${quizOptions.length} (%${currentScore})\n`);
     }
-    const finalScore = Math.floor(score/quizOptions.length * 100);
+    const finalScore = Math.floor(answeredCorrect/quizOptions.length * 100);
     console.log(`Quiz Complete!`);
-    console.log(`Final Score: ${score}/${quizOptions.length} (%${finalScore})`);
+    console.log(`Final Score: ${answeredCorrect}/${quizOptions.length} (%${finalScore})`);
     console.log('Thanks for playing!');
     if(isTopFive(finalScore)){
         console.log('Congratulations! You scored a high score!');
@@ -75,7 +75,7 @@ const addTopFive = (name, score) =>{
 };
 
 const isTopFive = (score) => {
-    if(topFivePlayers.length < 5 && score ){
+    if(topFivePlayers.length < 5){
         return true;
     }
     const n = topFivePlayers.length - 1;
