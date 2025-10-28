@@ -1,23 +1,36 @@
 const prompt = require('prompt-sync')({sigint: true});
-//const path = require('path');
 const fs = require('fs');
 
-// const pathToJSON = fs.readFile(path.join(__dirname, 'swe-project-1-cli-app', 'high-scores.json'))
 // array of questions
 const quizOptions = [
     {
-    question : "What is 2+2",
-    choices: ['4', '22', '0', '40'],
-    answerIndex : 0,
+        question : 'What is 2+2',
+        choices: ['4', '22', '0', '40'],
+        answerIndex : 0,
     },
     {
-    question : "What is 5*6",
-    choices: ['3', '56', '30', '11'],
-    answerIndex : 2,
+        question : 'What is 5*6',
+        choices: ['3', '56', '30', '11'],
+        answerIndex : 2,
+    },
+    {
+        question: 'What is the square root of 81',
+        choices: ['3', '9', '6'],
+        answerIndex: 1
+    },
+    {
+        question: 'How many sides does a square have',
+        choices: ['2', '1', '3', '4'],
+        answerIndex: 3
+    }, 
+    {
+        question: 'What is the capital of Guatemala',
+        choices: ['Jutiapa', 'El Progreso', 'Guatemala City', 'Honduras'],
+        answerIndex : 2
     },
 ];
 
-// create array to hold the top 5 players
+// create array to hold the top 5 players and push them into topFivePlayers array
 const topFivePlayers = [
     // {
     //     name, 
@@ -26,25 +39,22 @@ const topFivePlayers = [
     // }
 ];
 
+// load the top five players from the JSON file
 const loadDataFromJSON = () =>{
     try {
-        const playerInfo = fs.readFileSync('high-scores.json', 'utf8');
-        const jsonData = JSON.parse(playerInfo);
-        topFivePlayers.push(...jsonData);
+        const data = fs.readFileSync('high-scores.json', 'utf8');
+        const playerInfo = JSON.parse(data);
+        topFivePlayers.push(...playerInfo);
     } catch (error) {
         console.error('Error reading or parsing JSON file', error);
     }
 };
 
+// this function 
 const saveDataToJSON = () => {
-    const data = JSON.stringify(topFivePlayers, null, 2);
-    fs.writeFile('high-scores.json', data, 'utf8', (err) => {
-        if(err) {
-            console.log('Error writing file:', err);
-        } 
-    });
+    fs.writeFileSync('high-scores.json', JSON.stringify(topFivePlayers, null, 2), 'utf8');
 };
-const viewQuiz = () =>{
+const startQuiz = () =>{
     // create variable to hold the number of questions answered correctly
     let answeredCorrect = 0;
     // traverse the array of 
@@ -64,19 +74,19 @@ const viewQuiz = () =>{
 
         // check if the current index matches the `answerIndex` property in quizOptions
         // if it's true, increase the number of questions answered correctly
-        if(checkAnswers(indexChoice, i)){
+        if(checkAnswer(indexChoice, i)){
             answeredCorrect++;
             console.log('Correct! Well done!');
         } else{
             console.log('Incorrect :(');
         }
         // Calculate the current percentage/grade
-        const currentScore = Math.floor(answeredCorrect/quizOptions.length * 100);
+        const currentScore = Math.round(answeredCorrect/quizOptions.length * 100);
         // Display how many questions the user has answered correctly and the grade
         console.log(`Current Score: ${answeredCorrect}/${quizOptions.length} (%${currentScore})\n`);
     }
     // Final Score after the loop is done
-    const finalScore = Math.floor(answeredCorrect/quizOptions.length * 100);
+    const finalScore = Math.round(answeredCorrect/quizOptions.length * 100);
     console.log(`Quiz Complete!`);
     console.log(`Final Score: ${answeredCorrect}/${quizOptions.length} (%${finalScore})`);
     console.log('Thanks for playing!');
@@ -89,7 +99,7 @@ const viewQuiz = () =>{
 
 };
 
-const checkAnswers = (index, currentQuestion) =>{
+const checkAnswer = (index, currentQuestion) =>{
     return index === quizOptions[currentQuestion].answerIndex;
 };
 
@@ -113,7 +123,7 @@ const addTopFive = (name, score) =>{
 };
 
 const isTopFive = (score) => {
-    if(topFivePlayers.length < 5){
+    if(topFivePlayers.length < 5 && score !== 0){
         return true;
     }
     const n = topFivePlayers.length - 1;
@@ -130,4 +140,4 @@ const viewTopFive = () => {
     });
 };
 loadDataFromJSON();
-module.exports = {viewQuiz, viewTopFive};
+module.exports = {startQuiz, viewTopFive};

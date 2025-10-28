@@ -3,7 +3,7 @@
 // do the options for the quiz
 
 const prompt = require('prompt-sync')({siginit : true});
-const {viewQuiz, viewTopFive} = require('./quiz');
+const {startQuiz, viewTopFive} = require('./quiz');
 const showMenu = () => {
     let isRunning = true;
     while(isRunning){
@@ -15,8 +15,9 @@ const showMenu = () => {
         const menuChoice = prompt('Choose an Action (Enter 1-3): ').trim();
         
         if(menuChoice === '1'){
-            viewQuiz();
+            startQuiz();
         } else if(menuChoice === '2'){
+            console.log('Top 5 players:');
             viewTopFive();
         } else if(menuChoice === '3'){
             isRunning = false;

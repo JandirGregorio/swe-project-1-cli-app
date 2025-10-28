@@ -4,7 +4,7 @@ const main = () => {
     console.clear();
     console.log('Welcome to the quiz game!');
     showMenu();
-    console.log('See ya!');
+    console.log('See you next time!');
 };
 
 main();
