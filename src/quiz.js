@@ -2,7 +2,7 @@ const prompt = require('prompt-sync')({sigint: true});
 const fs = require('fs');
 
 // array of questions
-const quizOptions = [
+const quizQuestions = [
     {
         question : 'What is 2+2',
         choices: ['4', '22', '0', '40'],
@@ -50,15 +50,20 @@ const loadDataFromJSON = () =>{
     }
 };
 
-// this function 
+/* 
+this function saves the player information to a JSON file
+*/
 const saveDataToJSON = () => {
     fs.writeFileSync('high-scores.json', JSON.stringify(topFivePlayers, null, 2), 'utf8');
 };
+/**
+ * This function displays all the questions from quizOptions
+ */
 const startQuiz = () =>{
     // create variable to hold the number of questions answered correctly
     let answeredCorrect = 0;
     // traverse the array of 
-    for(let i = 0; i < quizOptions.length; i++){
+    for(let i = 0; i < quizQuestions.length; i++){
         // create a variable quizChoices to hold every question and get the array of choices
         const quizChoices = quizOptions[i].choices;
         // Print the question number and the question
@@ -81,14 +86,14 @@ const startQuiz = () =>{
             console.log('Incorrect :(');
         }
         // Calculate the current percentage/grade
-        const currentScore = Math.round(answeredCorrect/quizOptions.length * 100);
+        const currentScore = Math.round(answeredCorrect/quizQuestions.length * 100);
         // Display how many questions the user has answered correctly and the grade
-        console.log(`Current Score: ${answeredCorrect}/${quizOptions.length} (%${currentScore})\n`);
+        console.log(`Current Score: ${answeredCorrect}/${quizQuestions.length} (%${currentScore})\n`);
     }
     // Final Score after the loop is done
-    const finalScore = Math.round(answeredCorrect/quizOptions.length * 100);
+    const finalScore = Math.round(answeredCorrect/quizQuestions.length * 100);
     console.log(`Quiz Complete!`);
-    console.log(`Final Score: ${answeredCorrect}/${quizOptions.length} (%${finalScore})`);
+    console.log(`Final Score: ${answeredCorrect}/${quizQuestions.length} (%${finalScore})`);
     console.log('Thanks for playing!');
     // Check if the current player can make it to the top 5
     if(isTopFive(finalScore)){
@@ -99,12 +104,23 @@ const startQuiz = () =>{
 
 };
 
+/**
+ * This functions checks if the user guessed the right index saved in quizOptions[i].answerIndex;
+ * @param {number} index - this is the guess the user made from the question options 
+ * @param {number} currentQuestion - the current index in the quizOptions array of objects
+ * @returns a boolean indicating whether or not the user answered correctly
+ */
 const checkAnswer = (index, currentQuestion) =>{
     return index === quizOptions[currentQuestion].answerIndex;
 };
 
-// displayQuizOptions();
-
+/**
+ * This function adds an object to topFivePlayers array: {name, score, date}
+ * It sorts the array by the highest scores, and keeps only the 5 highest
+ * It uses saveDataToJSON to add the player information to the JSON file containing the 5 highest scores
+ * @param {string} name - the name of a player who made it to the top 5
+ * @param {number} score - score of the player
+ */
 const addTopFive = (name, score) =>{
     const date = new Date();
     const month = date.getMonth() + 1;
@@ -121,19 +137,31 @@ const addTopFive = (name, score) =>{
     saveDataToJSON();
 
 };
-
+/**
+ * This function checks if the player's score can make it to the top 5
+ * @param {number} score - player's quiz score
+ * @returns a boolean indicating whether or not the player can make in the top 5
+ */
 const isTopFive = (score) => {
+    // if there are currently less than 5 scores and the player's score is not zero
+    // return true
     if(topFivePlayers.length < 5 && score !== 0){
         return true;
     }
+    // get the last index in the array
     const n = topFivePlayers.length - 1;
+    // get the last place in the top 5
     const lastPlaceScore = topFivePlayers[n].score;
     return score > lastPlaceScore;
 };
-
+/**
+ * This function displays the top 5
+ */
 const viewTopFive = () => {
+    // if no players have played, print message and return
     if(topFivePlayers.length === 0){
         console.log('No players to see yet!');
+        return;
     }
     topFivePlayers.forEach((player, place) =>{
         console.log(`${place + 1}. ${player.score} (${player.name}) - ${player.date}`);

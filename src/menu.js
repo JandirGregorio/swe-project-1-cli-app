@@ -1,7 +1,3 @@
-// require
-
-// do the options for the quiz
-
 const prompt = require('prompt-sync')({siginit : true});
 const {startQuiz, viewTopFive} = require('./quiz');
 const showMenu = () => {
