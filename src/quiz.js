@@ -1,6 +1,8 @@
 const prompt = require('prompt-sync')({sigint: true});
 const fs = require('fs');
+const path = require('path');
 
+const JSONPath = path.join(__dirname, 'high-scores.json');
 // array of questions
 const quizQuestions = [
     {
@@ -42,13 +44,14 @@ const topFivePlayers = [
 // load the top five players from the JSON file
 const loadDataFromJSON = () =>{
     try {
-        const data = fs.readFileSync('high-scores.json', 'utf8');
+        const data = fs.readFileSync(JSONPath, 'utf8');
         const playerInfo = JSON.parse(data);
         topFivePlayers.push(...playerInfo);
     } catch (error) {
         console.error('Error reading or parsing JSON file', error);
     }
 };
+
 
 /* 
 this function saves the player information to a JSON file
