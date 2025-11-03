@@ -65,9 +65,9 @@ const startQuiz = () =>{
     // traverse the array of 
     for(let i = 0; i < quizQuestions.length; i++){
         // create a variable quizChoices to hold every question and get the array of choices
-        const quizChoices = quizOptions[i].choices;
+        const quizChoices = quizQuestions[i].choices;
         // Print the question number and the question
-        console.log(`Question ${i + 1}: ${quizOptions[i].question}?`);
+        console.log(`Question ${i + 1}: ${quizQuestions[i].question}?`);
         // print every choice in quizChoices using forEach
         quizChoices.forEach((answer, index) => {
         console.log(`${index + 1}) ${answer}`);
@@ -88,12 +88,13 @@ const startQuiz = () =>{
         // Calculate the current percentage/grade
         const currentScore = Math.round(answeredCorrect/quizQuestions.length * 100);
         // Display how many questions the user has answered correctly and the grade
-        console.log(`Current Score: ${answeredCorrect}/${quizQuestions.length} (%${currentScore})\n`);
+        console.log(`Current Score: ${answeredCorrect}/${quizQuestions.length} (${currentScore}%)\n`);
     }
     // Final Score after the loop is done
+    console.clear();
     const finalScore = Math.round(answeredCorrect/quizQuestions.length * 100);
     console.log(`Quiz Complete!`);
-    console.log(`Final Score: ${answeredCorrect}/${quizQuestions.length} (%${finalScore})`);
+    console.log(`Final Score: ${answeredCorrect}/${quizQuestions.length} (${finalScore}%)`);
     console.log('Thanks for playing!');
     // Check if the current player can make it to the top 5
     if(isTopFive(finalScore)){
@@ -111,7 +112,7 @@ const startQuiz = () =>{
  * @returns a boolean indicating whether or not the user answered correctly
  */
 const checkAnswer = (index, currentQuestion) =>{
-    return index === quizOptions[currentQuestion].answerIndex;
+    return index === quizQuestions[currentQuestion].answerIndex;
 };
 
 /**
